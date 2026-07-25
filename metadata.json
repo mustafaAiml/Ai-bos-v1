@@ -1,0 +1,6 @@
+{
+  "name": "AI-BOS (Smart Business Operating System)",
+  "description": "One AI. Every Workspace. Smart Retail & Ledger Suite powered by zyroX.",
+  "requestFramePermissions": ["camera", "microphone", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
