@@ -1,11 +1,14 @@
 services:
   - type: web
-    name: ai-bosv1-backend
+    name: Ai-bos-v1-1
     env: node
     buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_VERSION
+        value: 20.18.0
       - key: PORT
-        value: 3000
+        value: 10000
+
