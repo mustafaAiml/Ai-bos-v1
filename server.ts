@@ -30,6 +30,27 @@ async function startServer() {
 
   app.use(express.json({ limit: '20mb' }));
 
+  // Enable CORS for all incoming requests (Netlify, Render, Mobile, Custom domains)
+  app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(200);
+    }
+    next();
+  });
+
+  // Health check endpoints for Render and cloud load balancers
+  app.get(['/api/health', '/health'], (req, res) => {
+    res.json({
+      status: 'online',
+      app: 'AI BOS - Business Operating System Engine',
+      version: '2.0.0',
+      timestamp: new Date().toISOString()
+    });
+  });
+
   // Python Engine Status Endpoint
   app.get('/api/python/status', async (req, res) => {
     try {
