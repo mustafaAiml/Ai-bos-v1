@@ -3,7 +3,7 @@ services:
     name: Ai-bos-v1-1
     env: node
     buildCommand: bun install && bun run build:server
-    startCommand: bun run start
+    startCommand: node dist/server.cjs
     envVars:
       - key: NODE_ENV
         value: production
