@@ -32,6 +32,7 @@ import {
 } from './data/initialData';
 
 import { cleanItemName, devanagariToHinglish } from './utils/matching';
+import { saveAccountDataToFirestore, loadAccountDataFromFirestore } from './lib/dbSync';
 
 import { Navbar } from './components/Navbar';
 import { DashboardView } from './components/DashboardView';
@@ -43,8 +44,12 @@ import { SplashLoginModal } from './components/SplashLoginModal';
 import { SuiteSwitcherModal } from './components/SuiteSwitcherModal';
 import { ShopRegistrationModal } from './components/ShopRegistrationModal';
 import { PublishModal } from './components/PublishModal';
+import { OnboardingView } from './components/OnboardingView';
+import { AIAssistantView } from './components/AIAssistantView';
+import { AgenticAlertsView } from './components/AgenticAlertsView';
+import { ReportsView } from './components/ReportsView';
 
-type ActiveTab = 'dashboard' | 'inventory' | 'voice' | 'scanner' | 'ledger';
+type ActiveTab = 'dashboard' | 'inventory' | 'voice' | 'scanner' | 'ledger' | 'assistant' | 'reports';
 
 export default function App() {
   // Helper to load account data from localStorage based on user email
@@ -66,16 +71,15 @@ export default function App() {
   const [user, setUser] = useState<UserAuth>(() => {
     const saved = localStorage.getItem('aibos_user');
     return saved ? JSON.parse(saved) : {
-      isLoggedIn: true,
-      email: 'mustafakhan000143@gmail.com',
-      name: 'Mustafa Khan',
-      phone: '9876543210',
-      token: 'jwt_mock_token_889'
+      isLoggedIn: false,
+      email: '',
+      name: ''
     };
   });
 
   const [activeWorkspace, setActiveWorkspace] = useState<WorkspaceType>('commerce');
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
+  const [authModalMode, setAuthModalMode] = useState<'signin' | 'signup'>('signin');
 
   // Account-Scoped Persistent States
   const initialAccount = loadAccountData(user.email);
@@ -128,7 +132,7 @@ export default function App() {
     setTimeout(() => setToastMsg(null), 3500);
   };
 
-  // Sync state to account-scoped LocalStorage
+  // Sync state to account-scoped LocalStorage & Firestore DB
   useEffect(() => {
     localStorage.setItem('aibos_user', JSON.stringify(user));
     if (user.email) {
@@ -142,17 +146,32 @@ export default function App() {
         lastUpdated: new Date().toISOString()
       };
       localStorage.setItem(userKey, JSON.stringify(payload));
+
+      // Async Firestore Cloud Persistence Sync
+      saveAccountDataToFirestore(user.email, payload);
     }
   }, [user, shop, inventory, transactions, customers, udhaarTransactions]);
 
-  // Handle Login & Account Switch
-  const handleLoginSuccess = (newUser: UserAuth) => {
+  // Handle Login & Account Switch with Cloud Sync
+  const handleLoginSuccess = async (newUser: UserAuth) => {
     setUser(newUser);
     const userKey = `aibos_user_account_${newUser.email.toLowerCase().trim()}`;
     const savedAccountStr = localStorage.getItem(userKey);
 
+    // Try loading from Firestore cloud database first
+    const cloudData = await loadAccountDataFromFirestore(newUser.email);
+    if (cloudData) {
+      if (cloudData.shop) setShop(cloudData.shop);
+      if (cloudData.inventory) setInventory(cloudData.inventory);
+      if (cloudData.transactions) setTransactions(cloudData.transactions);
+      if (cloudData.customers) setCustomers(cloudData.customers);
+      if (cloudData.udhaarTransactions) setUdhaarTransactions(cloudData.udhaarTransactions);
+      showToast(`✅ Welcome back ${newUser.name}! Synced store data from Cloud Database.`);
+      return;
+    }
+
     if (savedAccountStr) {
-      // RETURNING USER WITH EXISTING STORE DATA!
+      // RETURNING USER WITH LOCALSTORE DATA!
       try {
         const acc = JSON.parse(savedAccountStr);
         if (acc.shop) setShop(acc.shop);
@@ -466,6 +485,24 @@ export default function App() {
     setIsShopModalOpen(true);
   };
 
+  if (!user.isLoggedIn) {
+    return (
+      <>
+        <OnboardingView onOpenAuth={(mode) => {
+          if (mode) setAuthModalMode(mode);
+          setIsAuthModalOpen(true);
+        }} />
+        <SplashLoginModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          onLoginSuccess={handleLoginSuccess}
+          currentUser={user}
+          initialMode={authModalMode}
+        />
+      </>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased flex flex-col selection:bg-emerald-500 selection:text-white">
       
@@ -492,10 +529,10 @@ export default function App() {
       )}
 
       {/* Main App Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         
         {/* Navigation Tab Bar */}
-        <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-6 overflow-x-auto gap-2">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3 overflow-x-auto gap-2">
           <div className="flex items-center gap-1 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
             
             <button
@@ -507,7 +544,7 @@ export default function App() {
               }`}
             >
               <BarChart3 className="w-4 h-4" />
-              <span>Dashboard & Profit</span>
+              <span>Dashboard</span>
             </button>
 
             <button
@@ -558,6 +595,30 @@ export default function App() {
               <span>Udhaar Khata</span>
             </button>
 
+            <button
+              onClick={() => setActiveTab('assistant')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+                activeTab === 'assistant'
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>AI Consultant</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('reports')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+                activeTab === 'reports'
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }`}
+            >
+              <BarChart3 className="w-4 h-4" />
+              <span>Reports & Analytics</span>
+            </button>
+
           </div>
 
           <button
@@ -569,6 +630,13 @@ export default function App() {
             <span className="hidden sm:inline">Reset Demo Data</span>
           </button>
         </div>
+
+        {/* Autonomous Agentic AI Workflow Alerts Bar */}
+        <AgenticAlertsView
+          inventory={inventory}
+          transactions={transactions}
+          customers={customers}
+        />
 
         {/* Tab Views */}
         {activeTab === 'dashboard' && (
@@ -611,6 +679,24 @@ export default function App() {
             transactions={udhaarTransactions}
             onAddCustomer={handleAddCustomer}
             onAddUdhaarEntry={handleAddUdhaarEntry}
+          />
+        )}
+
+        {activeTab === 'assistant' && (
+          <AIAssistantView
+            shop={shop}
+            inventory={inventory}
+            transactions={transactions}
+            customers={customers}
+          />
+        )}
+
+        {activeTab === 'reports' && (
+          <ReportsView
+            shop={shop}
+            inventory={inventory}
+            transactions={transactions}
+            customers={customers}
           />
         )}
 
@@ -674,8 +760,8 @@ export default function App() {
       {/* Footer */}
       <footer className="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-500 mt-8">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p>© 2026 <strong className="text-slate-800">AI-BOS</strong> (Smart Business Operating System) • Tagline: <em className="text-emerald-700 font-medium">One AI. Every Workspace.</em></p>
-          <p className="text-[11px] text-slate-500">Powered by <strong className="text-emerald-700 font-semibold">zyroX Core Engine</strong> • Gemini 2.5 Flash Vision & Voice NLP</p>
+          <p>© 2026 <strong className="text-slate-800">AI BOS</strong> (Smart Business Operating System) • Tagline: <em className="text-emerald-700 font-medium">Enterprise Business Intelligence Engine</em></p>
+          <p className="text-[11px] text-slate-500">Powered by <strong className="text-emerald-700 font-semibold">AI BOS Intelligence Core</strong> • Gemini 2.5 Flash Vision & Voice NLP</p>
         </div>
       </footer>
 

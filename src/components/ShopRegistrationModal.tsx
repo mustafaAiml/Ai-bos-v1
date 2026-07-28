@@ -477,7 +477,7 @@ export const ShopRegistrationModal: React.FC<ShopRegistrationModalProps> = ({
 
         {/* Footer */}
         <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-slate-500">
-          <span className="text-[11px]">zyroX Maps & Gemini AI Engine</span>
+          <span className="text-[11px]">AI BOS Location & Intelligence Engine</span>
           <button
             type="button"
             onClick={onClose}

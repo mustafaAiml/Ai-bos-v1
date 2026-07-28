@@ -39,8 +39,8 @@ Return JSON: {{ "tips": ["tip1", "tip2", "tip3"] }}
     margin = round((body.netProfit / body.revenue) * 100) if body.revenue > 0 else 0
     return DailyInsightsResponse(
         tips=[
-            "🐍 [Python FastAPI Core] High-margin inventory items are moving fast today.",
-            "💡 [Python FastAPI Core] Keep fast-moving stock displayed near checkout for evening peak.",
-            f"📊 [Python FastAPI Core] Today's profit margin is healthy at {margin}%. Remind Udhaar customers for timely payments."
+            "💡 High-margin inventory items are moving fast today.",
+            "📦 Keep fast-moving stock displayed prominently near checkout for evening peak sales.",
+            f"📊 Today's profit margin is healthy at {margin}%. Remind credit ledger customers for timely settlement."
         ]
     )

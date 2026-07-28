@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "user_stores": {
+      "title": "User Stores & Inventory Data",
+      "description": "Stores complete business profile, inventory stock, transactions, and Udhaar ledger per authenticated account email",
+      "type": "object",
+      "properties": {
+        "shop": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string" },
+            "name": { "type": "string" },
+            "address": { "type": "string" },
+            "pincode": { "type": "string" },
+            "ownerName": { "type": "string" },
+            "ownerEmail": { "type": "string" },
+            "phone": { "type": "string" },
+            "category": { "type": "string" }
+          }
+        },
+        "inventory": { "type": "array" },
+        "transactions": { "type": "array" },
+        "customers": { "type": "array" },
+        "udhaarTransactions": { "type": "array" },
+        "lastUpdated": { "type": "string", "format": "date-time" }
+      },
+      "required": ["shop", "lastUpdated"]
+    },
+    "otp_codes": {
+      "title": "OTP Code Records",
+      "description": "Stores secure 6-digit email OTPs for authentication and registration",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "otp": { "type": "string" },
+        "expires_at": { "type": "number" },
+        "resend_allowed_at": { "type": "number" },
+        "attempts": { "type": "number" }
+      },
+      "required": ["email", "otp", "expires_at"]
+    }
+  }
+}

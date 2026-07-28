@@ -40,10 +40,10 @@ export const SuiteSwitcherModal: React.FC<SuiteSwitcherModalProps> = ({
             </div>
             <div>
               <h3 className="text-lg font-bold text-slate-900 leading-none">
-                AI-BOS Workspace Selector
+                AI BOS Workspace Selector
               </h3>
               <p className="text-xs text-slate-500 mt-1">
-                One AI. Every Workspace. Switch between your business operating modules.
+                Intelligent Business Operating System. Switch between your enterprise modules.
               </p>
             </div>
           </div>
@@ -72,60 +72,60 @@ export const SuiteSwitcherModal: React.FC<SuiteSwitcherModalProps> = ({
           >
             {activeSuite === 'commerce' && (
               <span className="absolute top-3 right-3 px-2 py-0.5 text-[10px] font-bold bg-emerald-600 text-white rounded-full flex items-center gap-1 shadow-xs">
-                <Check className="w-3 h-3 text-white" /> OPEN
+                <Check className="w-3 h-3 text-white" /> ACTIVE
               </span>
             )}
             <div>
               <div className="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-200 text-emerald-700 flex items-center justify-center mb-3">
                 <Store className="w-5 h-5" />
               </div>
-              <h4 className="text-base font-bold text-slate-900 mb-1">🟦 Commerce Suite</h4>
+              <h4 className="text-base font-bold text-slate-900 mb-1">Commerce Suite</h4>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Smart Retail, Inventory Management, Voice Sales NLP, AI Bill Scanner, Udhaar Ledger & Profit Analytics.
+                Smart POS, Inventory Intelligence, Voice Orders, AI Bill Scanner, Udhaar Ledger & Business Analytics.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-emerald-200/60 flex items-center justify-between text-xs text-emerald-700 font-bold">
-              <span>Ready for Business</span>
+              <span>Enterprise Active</span>
               <ArrowRight className="w-4 h-4" />
             </div>
           </div>
 
-          {/* Education Suite (LOCKED) */}
+          {/* Finance Suite (LOCKED) */}
           <div className="relative rounded-xl p-5 border border-slate-200 bg-slate-50/80 opacity-80 flex flex-col justify-between">
             <span className="absolute top-3 right-3 px-2 py-0.5 text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-300 rounded-full flex items-center gap-1">
-              <Lock className="w-3 h-3 text-purple-700" /> Coming Soon
+              <Lock className="w-3 h-3 text-purple-700" /> Locked
             </span>
             <div>
               <div className="w-10 h-10 rounded-xl bg-purple-100/80 border border-purple-200 text-purple-700 flex items-center justify-center mb-3">
-                <UserCheck className="w-5 h-5" />
+                <Building2 className="w-5 h-5" />
               </div>
-              <h4 className="text-base font-bold text-slate-800 mb-1">🟪 Education Suite</h4>
+              <h4 className="text-base font-bold text-slate-800 mb-1">Finance Suite 🔒</h4>
               <p className="text-xs text-slate-500 leading-relaxed">
-                Attendance tracking, notes repository, class timetables, assignment manager & AI Study Assistant.
+                Corporate accounting, GST tax compliance, bank reconciliation & AI balance sheet forecasting.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-400 font-medium">
-              <span>Student & Teacher Hub</span>
+              <span>Financial Management</span>
               <Lock className="w-3.5 h-3.5" />
             </div>
           </div>
 
-          {/* Life Suite (LOCKED) */}
+          {/* Personal Space (LOCKED) */}
           <div className="relative rounded-xl p-5 border border-slate-200 bg-slate-50/80 opacity-80 flex flex-col justify-between">
             <span className="absolute top-3 right-3 px-2 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 rounded-full flex items-center gap-1">
-              <Lock className="w-3 h-3 text-amber-700" /> Coming Soon
+              <Lock className="w-3 h-3 text-amber-700" /> Locked
             </span>
             <div>
               <div className="w-10 h-10 rounded-xl bg-amber-100/80 border border-amber-200 text-amber-700 flex items-center justify-center mb-3">
-                <Building2 className="w-5 h-5" />
+                <UserCheck className="w-5 h-5" />
               </div>
-              <h4 className="text-base font-bold text-slate-800 mb-1">🟩 Life Suite</h4>
+              <h4 className="text-base font-bold text-slate-800 mb-1">Personal Space 🔒</h4>
               <p className="text-xs text-slate-500 leading-relaxed">
-                Personal household finance, health metrics, long-term goals, habit trackers & AI Life Coach.
+                Personal task management, goal tracking, habits, notes & personal productivity assistant.
               </p>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-400 font-medium">
-              <span>Personal Operating System</span>
+              <span>Personal Operating Space</span>
               <Lock className="w-3.5 h-3.5" />
             </div>
           </div>
@@ -134,7 +134,7 @@ export const SuiteSwitcherModal: React.FC<SuiteSwitcherModalProps> = ({
 
         {/* Footer info */}
         <div className="p-4 bg-slate-50 border-t border-slate-200 text-center text-xs text-slate-500">
-          ✨ Powered by <strong className="text-emerald-700 font-bold">zyroX Core AI Engine</strong> • Switch modules anytime without losing data.
+          ✨ <strong className="text-emerald-700 font-bold">AI BOS Intelligence Engine</strong> • Commercial Enterprise Architecture.
         </div>
 
       </div>

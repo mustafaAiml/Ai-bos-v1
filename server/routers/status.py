@@ -13,6 +13,6 @@ def get_system_status():
         status="active_and_healthy",
         python_version=sys.version.split()[0],
         genai_sdk_available=HAS_GENAI,
-        engine="Python 3.10 FastAPI & Agentic AI Core",
+        engine="AI BOS Business Intelligence Engine",
         has_api_key=bool(os.environ.get("GEMINI_API_KEY"))
     )

@@ -58,17 +58,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className="font-black text-xl tracking-tight text-slate-900">
-                    AI-BOS
+                    AI BOS
                   </span>
                   <span className="px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 rounded-md border border-emerald-200">
-                    zyroX
+                    Enterprise OS
                   </span>
-                  <span className="px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900 rounded-md border border-amber-300 flex items-center gap-1 shadow-2xs">
-                    🐍 Python 3.10 AI Core
+                  <span className="px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider bg-teal-100 text-teal-900 rounded-md border border-teal-300 flex items-center gap-1 shadow-2xs">
+                    Smart Intelligence Engine
                   </span>
                 </div>
                 <p className="text-[11px] font-medium text-slate-500 hidden sm:block">
-                  One AI. Every Workspace.
+                  AI Business Operating System
                 </p>
               </div>
             </div>
